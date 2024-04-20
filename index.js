@@ -22,7 +22,7 @@ bot.use(i18n);
 
 bot.api.setMyCommands([
   {command: 'language', description: 'Change language/Поменять язык'},
-  {command: 'forecast', description: 'Forecast duration'}
+  {command: 'forecast', description: 'Forecast duration/Продолжительность прогноза'}
 ])
 
 const inline_keyboard_language = new InlineKeyboard().text("🇬🇧English", 'english-lang')
