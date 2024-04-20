@@ -2,18 +2,13 @@ require('dotenv').config()
 const {Bot, GrammyError, HttpError, Keyboard, InlineKeyboard, session} = require('grammy')
 const { I18n } = require('@grammyjs/i18n')
 
-
-
 const bot = new Bot(process.env.Bot_KEY)
-
-
 
 const i18n = new I18n({
     directory: './locales', // directory where your language files are located
     useSession: true,
     defaultLocale: 'en'
 });
-
 
 bot.use(
     session({
@@ -33,8 +28,6 @@ bot.api.setMyCommands([
 const inline_keyboard_language = new InlineKeyboard().text("🇬🇧English", 'english-lang')
 .text("🇷🇺Русский", 'russian-lang')
 
-
-
 bot.command(['language', 'start'], async (ctx)=>{
     await ctx.reply("Choose language / Выберите язык", {
         reply_markup: inline_keyboard_language,
@@ -49,13 +42,10 @@ const weather_dur_en = new InlineKeyboard()
 bot.callbackQuery('english-lang', async (ctx)=>{
     await ctx.i18n.setLocale('en');
     await ctx.answerCallbackQuery("Language set to English")
-    
-
     await ctx.reply("Choose the duration of forecast", {
       reply_markup: weather_dur_en
     })
   })
-
 
   const weather_dur_ru = new InlineKeyboard()
   .text("1 День", 'forecastForOneDay')
@@ -64,42 +54,30 @@ bot.callbackQuery('english-lang', async (ctx)=>{
 bot.callbackQuery('russian-lang', async (ctx)=>{
   await ctx.i18n.setLocale('ru');
   await ctx.answerCallbackQuery("Язык изменен на Русский")
-
   await ctx.reply("Выберите продолжительность прогноза", {
     reply_markup: weather_dur_ru
   })
   
 })
 
-
 bot.command('forecast', async (ctx)=>{
   let a = await ctx.i18n.getLocale()
   console.log(a);
   if(a === 'en'){
     await ctx.reply("Choose the duration of forecast", {
-    
       reply_markup: weather_dur_en
-    
-    
   })
   }
   else {
     await ctx.reply("Выберите продолжительность прогноза", {
-    
       reply_markup: weather_dur_ru
-    
-    
   })
   }
-  
 })
 
   const loc1 = new Keyboard().requestLocation('📍Location').resized()
 
-
-
   let userState = {};
-
 
   bot.callbackQuery('forecastForOneDay', async (ctx)=>{
     userState[ctx.from.id] = 'forecastForOneDay';
@@ -113,7 +91,6 @@ bot.command('forecast', async (ctx)=>{
     await ctx.reply(ctx.t("location_request"), {
           reply_markup: loc1
         })
-    
   })
 
   bot.on(':location', async (ctx)=>{
@@ -244,7 +221,6 @@ bot.command('forecast', async (ctx)=>{
     }
     
   })
-
 
 
 bot.command("language", async (ctx) => {
